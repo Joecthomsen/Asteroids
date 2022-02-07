@@ -3,6 +3,7 @@
 //Constructors and deconstructors
 Game::Game() 
 {
+    //this->player = Player(200, 200);
     this->initWindow();
 }
 Game::~Game() {}
@@ -18,16 +19,21 @@ void Game::initWindow() {
 */
     this->videoMode = sf::VideoMode(800, 800);
     this->window = new sf::RenderWindow(this->videoMode, "Astroids", sf::Style::Close | sf::Style::Titlebar);
+    this->window->setFramerateLimit(60);
+    this->player.renderPlayer(this->window);
 }
 
 
 void Game::update() {
 /*
     @void 
-    This function updates the game constantly
-    -Take keyboard input
+    This function updates the players position
+    -Update the speed of the player
+    -Update the actuarl position
 */
-    this->keyboardInput();    
+    this->player.move();
+    this->player.setPosition();
+    //printf("%f   %f\n",this->player.getPlayer().getPosition().x, this->player.getPlayer().getPosition().y);
 }
 
 
@@ -54,5 +60,22 @@ void Game::keyboardInput() {
 }
 
 const bool Game::running() {
+/*
+    @bool
+    Check if the window is still open
+*/
     return this->window->isOpen();
+}
+
+void Game::render() 
+{
+/*  @Void
+    Render the player and the astroids.
+    -Clear the old frame
+    -Draw the next frame
+    -Display the new frame
+*/
+    this->window->clear();
+    this->window->draw(this->player.getPlayer());   
+    this->window->display(); 
 }

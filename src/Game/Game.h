@@ -1,7 +1,7 @@
-#include <iostream>
-#include<SFML/Graphics.hpp>
-#include<SFML/System.hpp>
-#include<SFML/Window.hpp>
+#ifndef _Game_H_
+#define _Game_H_
+
+#include "Player.h"
 
 class Game
 {
@@ -11,6 +11,7 @@ private:
     sf::Event windowEvent;
     sf::RenderWindow * window;
     sf::VideoMode videoMode;
+    Player player = Player(400, 400);
 
 public:
     //Constructors and deconstructors
@@ -24,6 +25,6 @@ public:
     const bool running();
     void update();
     void initWindow();
-    void renderWindow();  
-
+    void render();
 };
+#endif

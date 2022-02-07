@@ -18,12 +18,11 @@ int main()
     while (game.running())   
     {
     //Take input
-
+    game.keyboardInput();
     //Update game
-
     game.update();
-
     //Render 
+    game.render();
     }
 
     return 0;
