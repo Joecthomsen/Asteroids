@@ -3,7 +3,6 @@
 //Constructors and deconstructors
 Game::Game() 
 {
-    //this->player = Player(200, 200);
     this->initWindow();
 }
 Game::~Game() {}
@@ -28,17 +27,37 @@ void Game::update() {
 /*
     @void 
     This function updates the players position
-    -Update the speed of the player
-    -Update the actuarl position
+    -Take input
+    -Update the player position
+    -Update the bullet position
+    -Check if the bullet is out of bounce, if so, delete it. 
 */
-    this->player.move();
+    this->keyboardInput();
     this->player.setPosition();
-    //printf("%f   %f\n",this->player.getPlayer().getPosition().x, this->player.getPlayer().getPosition().y);
+    if(!this->bulletList.empty())
+    {
+        for(int index = 0 ; index < bulletList.size() ; index++)
+        {
+            this->bulletList[index].setPos();
+            if(this->bulletList[index].getPos().x > 800 || this->bulletList[index].getPos().x < 0 || this->bulletList[index].getPos().y > 800 || this->bulletList[index].getPos().y < 0)
+            {
+                this->bulletList.erase(this->bulletList.begin() + index);
+            }
+        }
+    }
+    if(this->timerOn)
+    {
+        this->startTime += 0.1f;
+        if(this->startTime > this->bulletDelay){this->startTime = 0.f; this->timerOn = false;}
+    }
+    //printf("%f\n", this->startTime);
+
 }
 
 
 //Keyboard input
-void Game::keyboardInput() {
+void Game::keyboardInput() 
+{
 /*
     @void
     Takes keyboard input from the user
@@ -57,9 +76,32 @@ void Game::keyboardInput() {
             break;
         }
     }
+
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+    {
+        this->player.rotateLeft();
+    }    
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+    {
+        this->player.rotateRight();
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+    {
+        this->player.setVelocity();
+    }
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+    {
+        if(!this->timerOn)  //Avoid mulitple bullets being spawned
+        {
+            this->bullet = Weapon(player);
+            this->bulletList.push_back(bullet);
+            this->timerOn = true;
+        }  
+    }
 }
 
-const bool Game::running() {
+const bool Game::running() 
+{
 /*
     @bool
     Check if the window is still open
@@ -75,7 +117,29 @@ void Game::render()
     -Draw the next frame
     -Display the new frame
 */
+//Clear new frame
     this->window->clear();
+//Draw next frame
+    if(!this->bulletList.empty())
+    {
+         for(int index = 0 ; index < bulletList.size() ; index++)
+        {
+           this->window->draw(this->bulletList[index].getBullet());
+        }
+        //this->window->draw(this->bulletList[0].getBullet());
+    }
     this->window->draw(this->player.getPlayer());   
+//Change frame
     this->window->display(); 
 }
+
+/*
+bool Game::insideBoarders(Weapon w) {
+    
+    if(w.getBullet().getPosition().x > 800 || w.getBullet().getPosition().x < 0 || w.getBullet().getPosition().y > 800 || w.getBullet().getPosition().y < 0 )
+    {
+        return false;
+    }
+    return true;    
+}
+*/

@@ -6,6 +6,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <cmath>
+#include <vector>
 
 class Player
 {
@@ -13,11 +14,12 @@ class Player
 private:
 
     sf::RectangleShape player;
-    sf::Vector2f speed = sf::Vector2f(0, 0);
+    sf::Vector2f velocity = sf::Vector2f(0, 0);
     sf::Vector2f rotation = sf::Vector2f(0, 0); 
     float acceleration = 0.1;
-    void rotateRight();
-    void rotateLeft();
+    bool deleted = false;
+ 
+
 
 public:
 
@@ -27,15 +29,20 @@ public:
 
     //Accessors
     sf::RectangleShape getPlayer();
+    sf::Vector2f getDirection();
+    sf::Vector2f getPos();
 
     //Modifiers
     void setPlayerSize(sf::Vector2f playerSize);
     void setPlayerStartPosition(float x, float y);
     void setPlayerColor();   //TODO
+    void rotateRight();
+    void rotateLeft();
+    void setVelocity();
 
 
     //Functions
-    void move();
+    void takeInput();
     void setPosition();
     void renderPlayer(sf::RenderWindow * target);
 

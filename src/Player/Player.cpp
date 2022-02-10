@@ -62,35 +62,21 @@ void Player::setPlayerColor() {
     this->player.setFillColor(sf::Color::Blue);   
 }
 
-void Player::move() 
-{
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-    {
-        //this->speed.x -= this->acceleration;
-        this->rotateLeft();
-    }    
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-    {
-        this->rotateRight();
-        //this->speed.x += this->acceleration;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-    {
-        this->speed.x += rotation.x/10;
-        this->speed.y += rotation.y/10;
-        //this->speed.y -= this->acceleration;
-    }
-    /*
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-    {
-        this->speed.y += this->acceleration;
-    }
-    */
-}
 
 void Player::setPosition() 
 {
-    this->player.move(sf::Vector2f(this->speed.x, this->speed.y));
+/*
+    @void
+    set the players new position.
+    -Check for boundery collision
+    -Set the speed accordantly to the input
+*/
+    if(this->player.getPosition().x < 0 - this->player.getSize().x){this->player.setPosition(800 + this->player.getSize().x, this->player.getPosition().y);}
+    else if(this->player.getPosition().x > 800 + this->player.getSize().x){this->player.setPosition(0 - this->player.getSize().x, this->player.getPosition().y);} 
+    else if(this->player.getPosition().y > 800 + this->player.getSize().x){this->player.setPosition(this->player.getPosition().x, 0 - this->player.getSize().x);}
+    else if(this->player.getPosition().y < 0 - this->player.getSize().x){this->player.setPosition(this->player.getPosition().x, 800 + this->player.getSize().x);}
+    else{this->player.move(sf::Vector2f(this->velocity.x, this->velocity.y));}
+    //printf("%f, %f\n", this->player.getPosition().x, this->player.getPosition().y);
 }
 
 void Player::rotateLeft() 
@@ -98,7 +84,7 @@ void Player::rotateLeft()
     this->player.rotate(-1);
     rotation.x = sin(((player.getRotation())/360)*2*M_PI);
     rotation.y = -cos(((player.getRotation())/360)*2*M_PI);
-    printf("x = %f  y = %f\n", rotation.x, rotation.y);   
+    //printf("x = %f  y = %f\n", rotation.x, rotation.y);   
 }
 
 void Player::rotateRight() 
@@ -106,5 +92,21 @@ void Player::rotateRight()
     this->player.rotate(1);
     rotation.x = sin(((player.getRotation())/360)*2*M_PI);
     rotation.y = -cos(((player.getRotation())/360)*2*M_PI);
-    printf("x = %f  y = %f\n", rotation.x, rotation.y);
+    //printf("x = %f  y = %f\n", rotation.x, rotation.y);
+}
+
+sf::Vector2f Player::getDirection() 
+{
+    return this->rotation;    
+}
+
+void Player::setVelocity() 
+{
+   this->velocity.x += rotation.x/10;
+   this->velocity.y += rotation.y/10;
+}
+
+sf::Vector2f Player::getPos() 
+{
+    return this->player.getPosition();
 }
