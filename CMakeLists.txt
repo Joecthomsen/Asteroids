@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.16.3)
 
 project(ASTROIDS)
 
-add_executable(${PROJECT_NAME} src/main.cpp src/Player/Player.cpp src/Game/Game.cpp src/Weapon/Weapon.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp src/Player/Player.cpp src/Game/Game.cpp src/Weapon/Weapon.cpp src/Asteroids/Asteroids.cpp)
 
-target_include_directories(${PROJECT_NAME} PUBLIC external/sfml/include src/Game/ src/Player/ src/Weapon/)
+target_include_directories(${PROJECT_NAME} PUBLIC external/sfml/include src/Game/ src/Player/ src/Weapon/ src/Asteroid/)
 
 target_link_directories(${PROJECT_NAME} PUBLIC external/sfml/lib)
 
