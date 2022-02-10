@@ -45,13 +45,37 @@ void Game::update() {
             }
         }
     }
-    if(this->timerOn)
+
+    //Increase the bullet timer
+    if(this->bulletTimerOn)
     {
         this->startTime += 0.1f;
-        if(this->startTime > this->bulletDelay){this->startTime = 0.f; this->timerOn = false;}
+        if(this->startTime > this->bulletDelay){this->startTime = 0.f; this->bulletTimerOn = false;}
     }
-    //printf("%f\n", this->startTime);
 
+    //Handle astroid timer
+    this->asteriodStartTimer += 0.1f;
+    if(this->asteriodStartTimer > this->asteroidSpawningTime)
+    {
+        this->asteroid = Asteroids(this->window);
+        this->astroidList.push_back(asteroid);
+        this->asteriodStartTimer = 0.f;
+    }
+   // printf("%f\n", this->asteriodStartTimer);
+    
+
+    //Update astroid position
+    if(!this->astroidList.empty())
+    {
+        for (int index = 0; index < this->astroidList.size() ; index++)
+        {
+            this->astroidList[index].updatePos();
+            if(this->astroidList[index].getAsteriod().getPosition().x > 830 || this->astroidList[index].getAsteriod().getPosition().x < 0 || this->astroidList[index].getAsteriod().getPosition().y > 830 || this->astroidList[0].getAsteriod().getPosition().y > 830)
+            {
+                this->astroidList.erase(this->astroidList.begin() + index);
+            }
+        } 
+    }
 }
 
 
@@ -91,11 +115,11 @@ void Game::keyboardInput()
     }
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
-        if(!this->timerOn)  //Avoid mulitple bullets being spawned
+        if(!this->bulletTimerOn)  //Avoid mulitple bullets being spawned
         {
             this->bullet = Weapon(player);
             this->bulletList.push_back(bullet);
-            this->timerOn = true;
+            this->bulletTimerOn = true;
         }  
     }
 }
@@ -119,17 +143,32 @@ void Game::render()
 */
 //Clear new frame
     this->window->clear();
+
 //Draw next frame
+
+    //Draw bullet(s)
     if(!this->bulletList.empty())
     {
-         for(int index = 0 ; index < bulletList.size() ; index++)
+        for(int index = 0 ; index < bulletList.size() ; index++)
         {
            this->window->draw(this->bulletList[index].getBullet());
         }
         //this->window->draw(this->bulletList[0].getBullet());
     }
+
+    //Draw astroid(s)
+    if(!this->astroidList.empty())
+    {
+        for(int index = 0 ; index < astroidList.size() ; index++)
+        {
+            this->window->draw(this->astroidList[index].getAsteriod());
+        }
+    }
+
+    //Draw player
     this->window->draw(this->player.getPlayer());   
-//Change frame
+
+    //Change frame
     this->window->display(); 
 }
 

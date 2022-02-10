@@ -1,7 +1,7 @@
 #ifndef _Game_H_
 #define _Game_H_
 
-#include "Weapon.h"
+#include <Asteroids.h>
 
 class Game
 {
@@ -12,12 +12,23 @@ private:
     sf::RenderWindow * window;
     sf::VideoMode videoMode;
     std::vector<Weapon> bulletList;
+    std::vector<Asteroids> astroidList;
     Player player = Player(400, 400);
     Weapon bullet; //Weapon(player);
+    Asteroids asteroid;
 
-    bool timerOn = false;
+    //Timer for the bullet, so that the player cannot shoot a burst
+    bool bulletTimerOn = false;
     float startTime = 0.f;
     float bulletDelay = 10.f;
+
+    //Timer for the asteroids spawning time
+    bool asteroidTimer = false;
+    float asteriodStartTimer = 0.f;
+    float asteroidSpawningTime = 20.f;
+
+
+
 
 public:
     //Constructors and deconstructors

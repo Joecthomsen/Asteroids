@@ -7,6 +7,7 @@
 #include <SFML/Window.hpp>
 #include <cmath>
 #include <vector>
+#include <ctime>
 
 class Player
 {
