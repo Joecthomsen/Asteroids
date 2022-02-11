@@ -8,8 +8,9 @@ class Asteroids
 
 private:
 
-    enum spawnSide {TOP, RIGHT, DOWN, LEFT};
+    enum spawnSide {LEFT, MIDDEL, RIGHT, TOP, DOWN};
     int spawnSide;
+    int spawnSection;
     sf::CircleShape asteroid;
     sf::Vector2f direction;
     float speed = 3.f;
